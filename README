@@ -1,0 +1,68 @@
+Joa bebop, hier mal der aktuelle java ftpd von mir, basiert auf sfvcheckftplet, was wiederum auf apache ftp server basiert :D
+Also einiges hier von übernommen:
+https://code.google.com/p/sfvcheckftplet/
+
+Was neu dazu kam:
+Quota (multi path, kann alles via conf/quota.conf eingestellt werden)
+Users.conf
+sfv.conf
+
+Folgende Commands:
+site users          Zeigt alle User an, und ob sie aktiviert/admin sind
+site enableuser <user>    Aktivier User
+site disableuser <user>   Deaktiviert User
+site reloadquota Lädt Quotasettings neu
+site reloaduser Lädt usersettings neu
+site reloadsfv Lädt sfv settings neu
+site dfh Zeigt Quota/Disk status an (mb)
+site df Zeigt Quota/Disk status an (bytes)
+site exec <command>
+
+How to Build:
+
+Einfach mvn und jdk 6 installieren und ./make-server.sh ausführen.
+
+How to Build von Hand:
+
+mvn clean install -Pexecutablejar
+
+Und wie starte ich den Spaß?
+
+mit cd nach build/<date>/ wechseln und ./start.sh ausführen, oder java -jar httpd.jar.
+Der build Ordner ist komplett "standalone", braucht bis auf ein Java nichts.
+
+
+
+
+
+Changelog:
+0.1
+  Mehr oder minder Public Version mit allem Kram
+0.2
+  DDR Version mit nen paar bugs fixxed
+  Folgende Bugs wurden gefixxt:
+    Erkennt jetzt Proof/DVD/CD/Subs und erstellt ordnungsgemäß die incomplete folder
+    Wenn man nach (incomplete)-Blubb filled werden die Pfade jetzt korrigiert
+    Dass User deaktiviert werden, passiert immer dann, wenn man via shell die user.conf editiert.
+  Neuer Bug:
+    Hin und wieder -BAD, obwohl complete.    
+
+Jo viel Spaß damit, es sind noch nen paar Bugs unterwegs.
+Known Bugs:
+*1
+Hin und wieder wird ein Ordner in nem Ordner in nem Ordner in nem Ordner erstellt. Und ich habe keinen Schimmer warum.
+Sieht dann so aus:
+/2.Fast.2.Furious.German.2003.AC3.BDRip.XviD.iNTERNAL-VideoStar/2.Fast.2.Furious.German.2003.AC3.BDRip.XviD.iNTERNAL-VideoStar/2.Fast.2.Furious.German.2003.AC3.BDRip.XviD.iNTERNAL-VideoStar/2.Fast.2.Furious.German.2003.AC3.BDRip.XviD.iNTERNAL-VideoStar/2.Fast.2.Furious.German.2003.AC3.BDRip.XviD.iNTERNAL-VideoStar/2.Fast.2.Furious.German.2003.AC3.BDRip.XviD.iNTERNAL-VideoStar/2.Fast.2.Furious.German.2003.AC3.BDRip.XviD.iNTERNAL-VideoStar/...
+Einfach als Admin site exec rm -rf "2.Fast.2.Furious.German.2003.AC3.BDRip.XviD.iNTERNAL-VideoStar" ausführen.
+
+*2 (Fixxed in 0.2)
+Wenn in nem (incomplete) Folder gefilled wird, korrigiert er die stats nicht richtig. War zu faul das bis jetzt zu fixxen, einfach im /dirname (ohne incomplete) fillen.
+
+*3 (Kein Bug siehe 0.2)
+Hin und wieder deaktivieren sich User, ist mir noch nie passiert, aber anderen die den FTPD verwenden. Einfach mit site activateuser <user> wieder aktivieren.
+
+*4 
+Hin und wieder wird etwas als -BAD makiert, obwohl es eigentlich complete ist.
+Oftmals bei vielen Threads/hoher Geschwindigkeit?!
+
+That's it. Greetz und so :D
